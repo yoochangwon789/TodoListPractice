@@ -26,7 +26,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initTodoListRecyclerView() {
-        todoListAdapter = TodoListAdapter()
+        todoListAdapter = TodoListAdapter(
+            itemDeleteClicked = {
+                itemDeleteClickListener(it)
+            }
+        )
+
         binding.todoListRecyclerView.adapter = todoListAdapter
         binding.todoListRecyclerView.layoutManager = LinearLayoutManager(this)
     }
@@ -34,8 +39,14 @@ class MainActivity : AppCompatActivity() {
     private fun initTodoListAddButton() {
         binding.todoListAddButton.setOnClickListener {
             todoListModelList.add(TodoListModel(binding.todoListNameEditText.text.toString()))
+
             todoListAdapter.submitList(todoListModelList)
             todoListAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun itemDeleteClickListener(todoListModel: TodoListModel) {
+        todoListModelList.remove(todoListModel)
+        todoListAdapter.notifyDataSetChanged()
     }
 }
