@@ -2,7 +2,7 @@ package com.yoochangwonspro.todolistpractice
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yoochangwonspro.todolistpractice.databinding.ActivityMainBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
@@ -54,6 +54,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun itemCompleteClickListener(todoListModel: TodoListModel) {
+        val isDone = todoListModel.completeTodoList.not()
+        todoListModel.completeTodoList = isDone
+    }
+}
+
+class MainViewModel : ViewModel() {
+    val todoListModelList = mutableListOf<TodoListModel>()
+
+    fun todoListAdd(todoListModel: TodoListModel) {
+        todoListModelList.add(todoListModel)
+    }
+
+    fun todoListDelete(todoListModel: TodoListModel) {
+        todoListModelList.remove(todoListModel)
+    }
+
+    fun todoListCompletion(todoListModel: TodoListModel) {
         val isDone = todoListModel.completeTodoList.not()
         todoListModel.completeTodoList = isDone
     }
