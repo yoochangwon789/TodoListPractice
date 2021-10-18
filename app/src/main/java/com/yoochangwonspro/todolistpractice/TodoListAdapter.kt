@@ -8,9 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yoochangwonspro.todolistpractice.databinding.TodoListItemBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
 
-class TodoListAdapter(val itemDeleteClicked: (TodoListModel) -> Unit) : ListAdapter<TodoListModel, TodoListAdapter.ViewHolder>(diffUtil) {
+class TodoListAdapter(
+    val itemDeleteClicked: (TodoListModel) -> Unit,
+    val itemCompleteClicked: (TodoListModel) -> Unit
+) : ListAdapter<TodoListModel, TodoListAdapter.ViewHolder>(diffUtil) {
 
-    inner class ViewHolder(private val binding: TodoListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: TodoListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(todoListModel: TodoListModel) {
             binding.itemTodoTextView.text = todoListModel.itemName
@@ -18,11 +22,17 @@ class TodoListAdapter(val itemDeleteClicked: (TodoListModel) -> Unit) : ListAdap
             binding.deleteImageButton.setOnClickListener {
                 itemDeleteClicked(todoListModel)
             }
+
+            binding.completionButton.setOnClickListener {
+                itemCompleteClicked(todoListModel)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(TodoListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(TodoListItemBinding.inflate(LayoutInflater.from(parent.context),
+            parent,
+            false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -35,7 +45,10 @@ class TodoListAdapter(val itemDeleteClicked: (TodoListModel) -> Unit) : ListAdap
                 return oldItem.itemName == newItem.itemName
             }
 
-            override fun areContentsTheSame(oldItem: TodoListModel, newItem: TodoListModel): Boolean {
+            override fun areContentsTheSame(
+                oldItem: TodoListModel,
+                newItem: TodoListModel,
+            ): Boolean {
                 return oldItem == newItem
             }
 
