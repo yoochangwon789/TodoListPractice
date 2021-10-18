@@ -8,12 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yoochangwonspro.todolistpractice.databinding.TodoListItemBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
 
-class TodoListAdapter : ListAdapter<TodoListModel, TodoListAdapter.ViewHolder>(diffUtil) {
+class TodoListAdapter(val itemDeleteClicked: (TodoListModel) -> Unit) : ListAdapter<TodoListModel, TodoListAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: TodoListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(todoListModel: TodoListModel) {
             binding.itemTodoTextView.text = todoListModel.itemName
+
+            binding.deleteImageButton.setOnClickListener {
+                itemDeleteClicked(todoListModel)
+            }
         }
     }
 
