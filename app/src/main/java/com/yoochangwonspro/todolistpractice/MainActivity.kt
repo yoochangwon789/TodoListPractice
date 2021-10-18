@@ -2,6 +2,7 @@ package com.yoochangwonspro.todolistpractice
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yoochangwonspro.todolistpractice.databinding.ActivityMainBinding
@@ -14,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var todoListAdapter: TodoListAdapter
 
     private val todoListModelList = mutableListOf<TodoListModel>()
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
