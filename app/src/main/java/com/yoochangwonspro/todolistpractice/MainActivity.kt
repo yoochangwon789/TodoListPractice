@@ -14,8 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var todoListAdapter: TodoListAdapter
 
-    private val todoListModelList = mutableListOf<TodoListModel>()
-
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,21 +42,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun initTodoListAddButton() {
         binding.todoListAddButton.setOnClickListener {
-            todoListModelList.add(TodoListModel(binding.todoListNameEditText.text.toString()))
+            val todoListModel = TodoListModel(binding.todoListNameEditText.text.toString())
+            viewModel.todoListAdd(todoListModel)
 
-            todoListAdapter.submitList(todoListModelList)
+            todoListAdapter.submitList(viewModel.todoListModelList)
             todoListAdapter.notifyDataSetChanged()
         }
     }
 
     private fun itemDeleteClickListener(todoListModel: TodoListModel) {
-        todoListModelList.remove(todoListModel)
+        viewModel.todoListDelete(todoListModel)
         todoListAdapter.notifyDataSetChanged()
     }
 
     private fun itemCompleteClickListener(todoListModel: TodoListModel) {
-        val isDone = todoListModel.completeTodoList.not()
-        todoListModel.completeTodoList = isDone
+        viewModel.todoListCompletion(todoListModel)
+        todoListAdapter.notifyDataSetChanged()
     }
 }
 
