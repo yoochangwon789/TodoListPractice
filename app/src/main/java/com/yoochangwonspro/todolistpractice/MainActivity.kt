@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initTodoListRecyclerView() {
         todoListAdapter = TodoListAdapter(
+            viewModel.todoListModelList,
             itemDeleteClicked = {
                 itemDeleteClickListener(it)
             },
@@ -45,7 +46,6 @@ class MainActivity : AppCompatActivity() {
             val todoListModel = TodoListModel(binding.todoListNameEditText.text.toString())
             viewModel.todoListAdd(todoListModel)
 
-            todoListAdapter.submitList(viewModel.todoListModelList)
             todoListAdapter.notifyDataSetChanged()
         }
     }
@@ -73,7 +73,6 @@ class MainViewModel : ViewModel() {
     }
 
     fun todoListCompletion(todoListModel: TodoListModel) {
-        val isDone = todoListModel.completeTodoList.not()
-        todoListModel.completeTodoList = isDone
+        todoListModel.completeTodoList = !todoListModel.completeTodoList
     }
 }

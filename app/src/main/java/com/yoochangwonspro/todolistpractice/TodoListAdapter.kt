@@ -11,37 +11,13 @@ import com.yoochangwonspro.todolistpractice.databinding.TodoListItemBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
 
 class TodoListAdapter(
+    val todoListData: MutableList<TodoListModel>,
     val itemDeleteClicked: (TodoListModel) -> Unit,
     val itemCompleteClicked: (TodoListModel) -> Unit
-) : ListAdapter<TodoListModel, TodoListAdapter.ViewHolder>(diffUtil) {
+) : RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: TodoListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(todoListModel: TodoListModel) {
-            binding.itemTodoTextView.text = todoListModel.itemName
-
-            binding.deleteImageButton.setOnClickListener {
-                itemDeleteClicked(todoListModel)
-            }
-
-            binding.completionButton.setOnClickListener {
-                itemCompleteClicked(todoListModel)
-
-                if (todoListModel.completeTodoList) {
-                    binding.itemTodoTextView.apply {
-                        paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                        setTypeface(null, Typeface.ITALIC)
-                    }
-                } else {
-                    binding.itemTodoTextView.apply {
-                        paintFlags = 0
-                        setTypeface(null, Typeface.NORMAL)
-                    }
-                }
-            }
-        }
-    }
+    class ViewHolder(val binding: TodoListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(TodoListItemBinding.inflate(LayoutInflater.from(parent.context),
@@ -50,22 +26,30 @@ class TodoListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.binding.itemTodoTextView.text = todoListData[position].itemName
+
+        holder.binding.deleteImageButton.setOnClickListener {
+            itemDeleteClicked(todoListData[position])
+        }
+
+        holder.binding.completionButton.setOnClickListener {
+            itemCompleteClicked(todoListData[position])
+
+            if (todoListData[position].completeTodoList) {
+                holder.binding.itemTodoTextView.apply {
+                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    setTypeface(null, Typeface.ITALIC)
+                }
+            } else {
+                holder.binding.itemTodoTextView.apply {
+                    paintFlags = 0
+                    setTypeface(null, Typeface.NORMAL)
+                }
+            }
+        }
     }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<TodoListModel>() {
-            override fun areItemsTheSame(oldItem: TodoListModel, newItem: TodoListModel): Boolean {
-                return oldItem.itemName == newItem.itemName
-            }
-
-            override fun areContentsTheSame(
-                oldItem: TodoListModel,
-                newItem: TodoListModel
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-        }
+    override fun getItemCount(): Int {
+        return todoListData.size
     }
 }
