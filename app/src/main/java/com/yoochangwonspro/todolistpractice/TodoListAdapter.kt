@@ -11,7 +11,7 @@ import com.yoochangwonspro.todolistpractice.databinding.TodoListItemBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
 
 class TodoListAdapter(
-    val todoListData: MutableList<TodoListModel>,
+    private val todoListData: MutableList<TodoListModel>,
     val itemDeleteClicked: (TodoListModel) -> Unit,
     val itemCompleteClicked: (TodoListModel) -> Unit
 ) : RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {

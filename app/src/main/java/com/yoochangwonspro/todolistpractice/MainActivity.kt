@@ -73,6 +73,6 @@ class MainViewModel : ViewModel() {
     }
 
     fun todoListCompletion(todoListModel: TodoListModel) {
-        todoListModel.completeTodoList = !todoListModel.completeTodoList
+        todoListModel.completeTodoList = todoListModel.completeTodoList.not()
     }
 }
