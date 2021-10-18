@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity() {
         todoListAdapter = TodoListAdapter(
             itemDeleteClicked = {
                 itemDeleteClickListener(it)
+            },
+            itemCompleteClicked = {
+                itemCompleteClickListener(it)
             }
         )
 
@@ -48,5 +51,10 @@ class MainActivity : AppCompatActivity() {
     private fun itemDeleteClickListener(todoListModel: TodoListModel) {
         todoListModelList.remove(todoListModel)
         todoListAdapter.notifyDataSetChanged()
+    }
+
+    private fun itemCompleteClickListener(todoListModel: TodoListModel) {
+        val isDone = todoListModel.completeTodoList.not()
+        todoListModel.completeTodoList = isDone
     }
 }

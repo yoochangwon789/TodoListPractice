@@ -1,7 +1,10 @@
 package com.yoochangwonspro.todolistpractice
 
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,18 @@ class TodoListAdapter(
 
             binding.completionButton.setOnClickListener {
                 itemCompleteClicked(todoListModel)
+
+                if (todoListModel.completeTodoList) {
+                    binding.itemTodoTextView.apply {
+                        paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        setTypeface(null, Typeface.ITALIC)
+                    }
+                } else {
+                    binding.itemTodoTextView.apply {
+                        paintFlags = 0
+                        setTypeface(null, Typeface.NORMAL)
+                    }
+                }
             }
         }
     }
@@ -47,7 +62,7 @@ class TodoListAdapter(
 
             override fun areContentsTheSame(
                 oldItem: TodoListModel,
-                newItem: TodoListModel,
+                newItem: TodoListModel
             ): Boolean {
                 return oldItem == newItem
             }
