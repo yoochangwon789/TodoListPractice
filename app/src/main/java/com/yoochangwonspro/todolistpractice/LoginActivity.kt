@@ -21,6 +21,16 @@ class LoginActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        val email = binding.LoginEmailEditText.text.toString()
+        val password = binding.LoginPasswordEditText.text.toString()
 
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+
+                } else {
+
+                }
+            }
     }
 }
