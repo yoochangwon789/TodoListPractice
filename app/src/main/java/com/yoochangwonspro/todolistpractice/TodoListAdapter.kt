@@ -26,25 +26,26 @@ class TodoListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.itemTodoTextView.text = todoListData[position].itemName
+        val todoData = todoListData[position]
+        holder.binding.itemTodoTextView.text = todoData.itemName
 
         holder.binding.deleteImageButton.setOnClickListener {
-            itemDeleteClicked(todoListData[position])
+            itemDeleteClicked(todoData)
         }
 
         holder.binding.completionButton.setOnClickListener {
-            itemCompleteClicked(todoListData[position])
+            itemCompleteClicked(todoData)
+        }
 
-            if (todoListData[position].completeTodoList) {
-                holder.binding.itemTodoTextView.apply {
-                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    setTypeface(null, Typeface.ITALIC)
-                }
-            } else {
-                holder.binding.itemTodoTextView.apply {
-                    paintFlags = 0
-                    setTypeface(null, Typeface.NORMAL)
-                }
+        if (todoData.completeTodoList) {
+            holder.binding.itemTodoTextView.apply {
+                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                setTypeface(null, Typeface.ITALIC)
+            }
+        } else {
+            holder.binding.itemTodoTextView.apply {
+                paintFlags = 0
+                setTypeface(null, Typeface.NORMAL)
             }
         }
     }
