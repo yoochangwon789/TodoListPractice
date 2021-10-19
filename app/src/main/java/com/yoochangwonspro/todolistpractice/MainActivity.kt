@@ -1,10 +1,14 @@
 package com.yoochangwonspro.todolistpractice
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yoochangwonspro.todolistpractice.databinding.ActivityMainBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
 
@@ -15,6 +19,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var todoListAdapter: TodoListAdapter
 
     private val viewModel: MainViewModel by viewModels()
+
+    private val auth: FirebaseAuth by lazy {
+        Firebase.auth
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (auth.currentUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

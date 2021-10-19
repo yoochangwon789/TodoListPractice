@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/LoginTopTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToDoList"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/LoginEmailEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/todo_list_item_background"
+        android:gravity="center"
+        android:hint="아이디"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LoginTopTextView"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/LoginPasswordEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/todo_list_item_background"
+        android:gravity="center"
+        android:hint="비밀번호"
+        android:inputType="textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LoginEmailEditText"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/LoginSignUpButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:backgroundTint="@color/gray"
+        android:text="회원가입"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LoginPasswordEditText"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/LoginButton"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/gray"
+        android:text="로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LoginPasswordEditText"
+        tools:ignore="HardcodedText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
