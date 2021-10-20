@@ -3,6 +3,7 @@ package com.yoochangwonspro.todolistpractice
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 
         if (auth.currentUser == null) {
+            finish()
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         initTodoListRecyclerView()
         initTodoListAddButton()
+        initLogoutButton()
     }
 
     private fun initTodoListRecyclerView() {
@@ -63,6 +66,17 @@ class MainActivity : AppCompatActivity() {
             viewModel.todoListAdd(todoListModel)
 
             todoListAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun initLogoutButton() {
+        binding.logoutTextView.setOnClickListener {
+            if (auth.currentUser != null) {
+                finish()
+                startActivity(Intent(this, LoginActivity::class.java))
+            } else {
+                return@setOnClickListener
+            }
         }
     }
 
