@@ -1,5 +1,6 @@
 package com.yoochangwonspro.todolistpractice
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -44,6 +45,19 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this,
                         "회원 가입에 실패하셨습니다. 이미 가입한 이메일이 존재할 수 있습니다.",
                         Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun login() {
+        auth.signInWithEmailAndPassword(getEmailText(), getPasswordText())
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    Toast.makeText(this,
+                        "로그인에 실패했습니다 이메일과 비밀번호를 확인해 주세요.",
+                    Toast.LENGTH_SHORT).show()
                 }
             }
     }
