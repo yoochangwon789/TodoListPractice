@@ -3,6 +3,7 @@ package com.yoochangwonspro.todolistpractice
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -23,6 +24,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(view)
 
         initSignUpButton()
+        signUpButtonAndLoginButtonIsEnabled()
+
     }
 
     private fun initSignUpButton() {
@@ -43,6 +46,24 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun signUpButtonAndLoginButtonIsEnabled() {
+        binding.LoginEmailEditText.addTextChangedListener {
+            val enable = binding.LoginEmailEditText.text.isNotEmpty() &&
+                    binding.LoginPasswordEditText.text.isNotEmpty()
+
+            binding.LoginSignUpButton.isEnabled = enable
+            binding.LoginButton.isEnabled = enable
+        }
+
+        binding.LoginPasswordEditText.addTextChangedListener {
+            val enable = binding.LoginEmailEditText.text.isNotEmpty() &&
+                    binding.LoginPasswordEditText.text.isNotEmpty()
+
+            binding.LoginSignUpButton.isEnabled = enable
+            binding.LoginButton.isEnabled = enable
+        }
     }
 
     private fun getEmailText(): String {
