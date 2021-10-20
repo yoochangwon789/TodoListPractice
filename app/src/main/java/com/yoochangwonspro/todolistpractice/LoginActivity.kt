@@ -25,13 +25,19 @@ class LoginActivity : AppCompatActivity() {
         setContentView(view)
 
         initSignUpButton()
+        initLoginButton()
         signUpButtonAndLoginButtonIsEnabled()
-
     }
 
     private fun initSignUpButton() {
         binding.LoginSignUpButton.setOnClickListener {
             signUp()
+        }
+    }
+
+    private fun initLoginButton() {
+        binding.LoginButton.setOnClickListener {
+            login()
         }
     }
 
