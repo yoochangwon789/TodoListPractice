@@ -1,10 +1,10 @@
 package com.yoochangwonspro.todolistpractice
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -25,6 +25,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(view)
 
         initSignUpButton()
+        initLoginButton()
+        signUpButtonAndLoginButtonIsEnabled()
     }
 
     private fun initSignUpButton() {
@@ -33,11 +35,15 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun signUp() {
-        val email = binding.LoginEmailEditText.text.toString()
-        val password = binding.LoginPasswordEditText.text.toString()
+    private fun initLoginButton() {
+        binding.LoginButton.setOnClickListener {
+            login()
+        }
+    }
 
-        auth.createUserWithEmailAndPassword(email, password)
+    private fun signUp() {
+
+        auth.createUserWithEmailAndPassword(getEmailText(), getPasswordText())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "회원 가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show()
@@ -47,5 +53,44 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun login() {
+        auth.signInWithEmailAndPassword(getEmailText(), getPasswordText())
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    Toast.makeText(this,
+                        "로그인에 실패했습니다 이메일과 비밀번호를 확인해 주세요.",
+                    Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun signUpButtonAndLoginButtonIsEnabled() {
+        binding.LoginEmailEditText.addTextChangedListener {
+            val enable = binding.LoginEmailEditText.text.isNotEmpty() &&
+                    binding.LoginPasswordEditText.text.isNotEmpty()
+
+            binding.LoginSignUpButton.isEnabled = enable
+            binding.LoginButton.isEnabled = enable
+        }
+
+        binding.LoginPasswordEditText.addTextChangedListener {
+            val enable = binding.LoginEmailEditText.text.isNotEmpty() &&
+                    binding.LoginPasswordEditText.text.isNotEmpty()
+
+            binding.LoginSignUpButton.isEnabled = enable
+            binding.LoginButton.isEnabled = enable
+        }
+    }
+
+    private fun getEmailText(): String {
+        return binding.LoginEmailEditText.text.toString()
+    }
+
+    private fun getPasswordText(): String {
+        return binding.LoginPasswordEditText.text.toString()
     }
 }
