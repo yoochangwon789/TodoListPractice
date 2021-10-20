@@ -32,10 +32,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signUp() {
-        val email = binding.LoginEmailEditText.text.toString()
-        val password = binding.LoginPasswordEditText.text.toString()
 
-        auth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(getEmailText(), getPasswordText())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "회원 가입에 성공하셨습니다.", Toast.LENGTH_SHORT).show()
@@ -45,5 +43,13 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun getEmailText(): String {
+        return binding.LoginEmailEditText.text.toString()
+    }
+
+    private fun getPasswordText(): String {
+        return binding.LoginPasswordEditText.text.toString()
     }
 }
