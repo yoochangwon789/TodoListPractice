@@ -26,13 +26,8 @@ class DetailItemActivity : AppCompatActivity() {
         val itemId = intent.getStringExtra("itemId")
 
         itemTopText(itemName)
+        getOnTodoDetailThread(itemId)
 
-        Thread {
-            val todoDetail = db.todoDetailModelDao().getOnTodoDetail(itemId ?: "")
-            runOnUiThread {
-                binding.detailEditText.setText(todoDetail?.itemDetail.orEmpty())
-            }
-        }.start()
 
         binding.detailSaveButton.setOnClickListener {
             Thread {
@@ -49,5 +44,14 @@ class DetailItemActivity : AppCompatActivity() {
 
     private fun itemTopText(itemName: String?) {
         binding.detailItemTopTextView.text = itemName.orEmpty()
+    }
+
+    private fun getOnTodoDetailThread(itemId: String?) {
+        Thread {
+            val todoDetail = db.todoDetailModelDao().getOnTodoDetail(itemId ?: "")
+            runOnUiThread {
+                binding.detailEditText.setText(todoDetail?.itemDetail.orEmpty())
+            }
+        }.start()
     }
 }
