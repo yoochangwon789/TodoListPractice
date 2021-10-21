@@ -10,7 +10,7 @@ import com.yoochangwonspro.todolistpractice.todomodel.TodoDetailModel
 interface TodoDetailModelDao {
 
     @Query("SELECT * FROM tododetailmodel WHERE id == :id")
-    fun getOnTodoDetail(id: String): TodoDetailModel
+    fun getOnTodoDetail(id: String): TodoDetailModel?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun setTodoDetail(todoDetailModel: TodoDetailModel)
