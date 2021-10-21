@@ -2,10 +2,16 @@ package com.yoochangwonspro.todolistpractice
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.yoochangwonspro.todolistpractice.databinding.ActivityDetailItemBinding
 
 class DetailItemActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityDetailItemBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_item)
+        binding = ActivityDetailItemBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
 }
