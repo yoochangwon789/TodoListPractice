@@ -13,5 +13,6 @@ class DetailItemActivity : AppCompatActivity() {
         binding = ActivityDetailItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
     }
 }
