@@ -11,7 +11,8 @@ import com.yoochangwonspro.todolistpractice.databinding.TodoListItemBinding
 class TodoListAdapter(
     private var todoListData: List<DocumentSnapshot>,
     val itemDeleteClicked: (DocumentSnapshot) -> Unit,
-    val itemCompleteClicked: (DocumentSnapshot) -> Unit
+    val itemCompleteClicked: (DocumentSnapshot) -> Unit,
+    val itemClickedListener: (DocumentSnapshot) -> Unit
 ) : RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: TodoListItemBinding) :
