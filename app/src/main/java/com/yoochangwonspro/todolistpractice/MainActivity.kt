@@ -1,14 +1,16 @@
 package com.yoochangwonspro.todolistpractice
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.yoochangwonspro.todolistpractice.databinding.ActivityMainBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
@@ -43,16 +45,23 @@ class MainActivity : AppCompatActivity() {
         initTodoListRecyclerView()
         initTodoListAddButton()
         initLogoutButton()
+
+        viewModel.todoLiveData.observe(this, {
+            (binding.todoListRecyclerView.adapter as TodoListAdapter).setData(it)
+        })
     }
 
     private fun initTodoListRecyclerView() {
         todoListAdapter = TodoListAdapter(
-            viewModel.todoListModelList,
+            emptyList(),
             itemDeleteClicked = {
                 itemDeleteClickListener(it)
             },
             itemCompleteClicked = {
                 itemCompleteClickListener(it)
+            },
+            itemClickedListener = {
+                itemClickedListener(it)
             }
         )
 
@@ -80,29 +89,62 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun itemDeleteClickListener(todoListModel: TodoListModel) {
+    private fun itemDeleteClickListener(todoListModel: DocumentSnapshot) {
         viewModel.todoListDelete(todoListModel)
-        todoListAdapter.notifyDataSetChanged()
     }
 
-    private fun itemCompleteClickListener(todoListModel: TodoListModel) {
+    private fun itemCompleteClickListener(todoListModel: DocumentSnapshot) {
         viewModel.todoListCompletion(todoListModel)
-        todoListAdapter.notifyDataSetChanged()
+    }
+
+    private fun itemClickedListener(todoListModel: DocumentSnapshot) {
+        val intent = Intent(this, DetailItemActivity::class.java)
+        intent.putExtra("itemName", todoListModel.getString("itemName"))
+        intent.putExtra("itemId", todoListModel.id)
+        startActivity(intent)
     }
 }
 
 class MainViewModel : ViewModel() {
-    val todoListModelList = mutableListOf<TodoListModel>()
+    val todoLiveData = MutableLiveData<List<DocumentSnapshot>>()
+
+    private val db = Firebase.firestore
+
+    init {
+        fetch()
+    }
+
+    fun fetch() {
+        val user = Firebase.auth.currentUser
+        val docRef = db.collection(user?.uid.toString())
+        docRef.addSnapshotListener { value, error ->
+            if (error != null) {
+                return@addSnapshotListener
+            }
+
+            if (value != null) {
+                todoLiveData.value = value.documents
+            }
+        }
+    }
 
     fun todoListAdd(todoListModel: TodoListModel) {
-        todoListModelList.add(todoListModel)
+        Firebase.auth.currentUser?.let {
+            db.collection(it.uid).add(todoListModel)
+        }
     }
 
-    fun todoListDelete(todoListModel: TodoListModel) {
-        todoListModelList.remove(todoListModel)
+    fun todoListDelete(todoListModel: DocumentSnapshot) {
+        Firebase.auth.currentUser?.let {
+            db.collection(it.uid).document(todoListModel.id).delete()
+        }
     }
 
-    fun todoListCompletion(todoListModel: TodoListModel) {
-        todoListModel.completeTodoList = todoListModel.completeTodoList.not()
+    fun todoListCompletion(todoListModel: DocumentSnapshot) {
+        Firebase.auth.currentUser?.let {
+            val completeTodoList = todoListModel.getBoolean("completeTodoList") ?: false
+            db.collection(it.uid).document(todoListModel.id)
+                .update("completeTodoList", completeTodoList.not())
+        }
     }
 }

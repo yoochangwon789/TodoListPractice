@@ -4,16 +4,15 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.DocumentSnapshot
 import com.yoochangwonspro.todolistpractice.databinding.TodoListItemBinding
-import com.yoochangwonspro.todolistpractice.todomodel.TodoListModel
 
 class TodoListAdapter(
-    private val todoListData: MutableList<TodoListModel>,
-    val itemDeleteClicked: (TodoListModel) -> Unit,
-    val itemCompleteClicked: (TodoListModel) -> Unit
+    private var todoListData: List<DocumentSnapshot>,
+    val itemDeleteClicked: (DocumentSnapshot) -> Unit,
+    val itemCompleteClicked: (DocumentSnapshot) -> Unit,
+    val itemClickedListener: (DocumentSnapshot) -> Unit
 ) : RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: TodoListItemBinding) :
@@ -27,7 +26,7 @@ class TodoListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val todoData = todoListData[position]
-        holder.binding.itemTodoTextView.text = todoData.itemName
+        holder.binding.itemTodoTextView.text = todoData.getString("itemName") ?: ""
 
         holder.binding.deleteImageButton.setOnClickListener {
             itemDeleteClicked(todoData)
@@ -37,7 +36,11 @@ class TodoListAdapter(
             itemCompleteClicked(todoData)
         }
 
-        if (todoData.completeTodoList) {
+        holder.binding.root.setOnClickListener {
+            itemClickedListener(todoData)
+        }
+
+        if (todoData.getBoolean("completeTodoList") == true) {
             holder.binding.itemTodoTextView.apply {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 setTypeface(null, Typeface.ITALIC)
@@ -52,5 +55,10 @@ class TodoListAdapter(
 
     override fun getItemCount(): Int {
         return todoListData.size
+    }
+
+    fun setData(newData: List<DocumentSnapshot>) {
+        todoListData = newData
+        notifyDataSetChanged()
     }
 }
