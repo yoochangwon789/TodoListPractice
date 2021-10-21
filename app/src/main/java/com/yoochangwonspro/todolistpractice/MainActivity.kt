@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity() {
         Firebase.auth
     }
 
-    private val db = Firebase.firestore
-
     override fun onStart() {
         super.onStart()
 
@@ -97,8 +95,12 @@ class MainActivity : AppCompatActivity() {
 class MainViewModel : ViewModel() {
     val todoListModelList = mutableListOf<TodoListModel>()
 
+    private val db = Firebase.firestore
+
     fun todoListAdd(todoListModel: TodoListModel) {
-        todoListModelList.add(todoListModel)
+        Firebase.auth.currentUser?.let {
+            db.collection(it.uid).add(todoListModel)
+        }
     }
 
     fun todoListDelete(todoListModel: TodoListModel) {
