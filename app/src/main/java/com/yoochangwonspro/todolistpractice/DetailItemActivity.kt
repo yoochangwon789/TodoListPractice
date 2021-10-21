@@ -2,6 +2,7 @@ package com.yoochangwonspro.todolistpractice
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.room.Room
 import com.yoochangwonspro.todolistpractice.databinding.ActivityDetailItemBinding
 import com.yoochangwonspro.todolistpractice.todomodel.TodoDetailModel
@@ -22,24 +23,14 @@ class DetailItemActivity : AppCompatActivity() {
         binding = ActivityDetailItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val itemName = intent.getStringExtra("itemName")
         val itemId = intent.getStringExtra("itemId")
+        val itemName = intent.getStringExtra("itemName")
 
         itemTopText(itemName)
         getOnTodoDetailThread(itemId)
+        initTodoDetailButton(itemId, itemName)
 
 
-        binding.detailSaveButton.setOnClickListener {
-            Thread {
-                db.todoDetailModelDao().setTodoDetail(
-                    TodoDetailModel(
-                        itemId ?: "",
-                        itemName,
-                        binding.detailEditText.text.toString()
-                    )
-                )
-            }.start()
-        }
     }
 
     private fun itemTopText(itemName: String?) {
@@ -53,5 +44,21 @@ class DetailItemActivity : AppCompatActivity() {
                 binding.detailEditText.setText(todoDetail?.itemDetail.orEmpty())
             }
         }.start()
+    }
+
+    private fun initTodoDetailButton(itemId: String?, itemName: String?) {
+        binding.detailSaveButton.setOnClickListener {
+            Thread {
+                db.todoDetailModelDao().setTodoDetail(
+                    TodoDetailModel(
+                        itemId ?: "",
+                        itemName,
+                        binding.detailEditText.text.toString()
+                    )
+                )
+            }.start()
+
+            Toast.makeText(this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 }
