@@ -12,5 +12,6 @@ class DetailItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
     }
 }

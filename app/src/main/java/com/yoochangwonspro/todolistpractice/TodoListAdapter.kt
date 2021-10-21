@@ -36,6 +36,10 @@ class TodoListAdapter(
             itemCompleteClicked(todoData)
         }
 
+        holder.binding.root.setOnClickListener {
+            itemClickedListener(todoData)
+        }
+
         if (todoData.getBoolean("completeTodoList") == true) {
             holder.binding.itemTodoTextView.apply {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

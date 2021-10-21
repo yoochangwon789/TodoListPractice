@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity() {
             },
             itemCompleteClicked = {
                 itemCompleteClickListener(it)
+            },
+            itemClickedListener = {
+                itemClickedListener(it)
             }
         )
 
@@ -92,6 +95,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun itemCompleteClickListener(todoListModel: DocumentSnapshot) {
         viewModel.todoListCompletion(todoListModel)
+    }
+
+    private fun itemClickedListener(todoListModel: DocumentSnapshot) {
+        val intent = Intent(this, DetailItemActivity::class.java)
+        intent.putExtra("itemName", todoListModel.getString("itemName"))
+        startActivity(intent)
     }
 }
 
