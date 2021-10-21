@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class TodoDetailModel(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: String,
+    @ColumnInfo(name = "item_name") val itemName: String?,
     @ColumnInfo(name = "item_detail") val itemDetail: String?
 )
