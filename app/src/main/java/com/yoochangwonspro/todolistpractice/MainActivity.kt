@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity() {
     private fun itemClickedListener(todoListModel: DocumentSnapshot) {
         val intent = Intent(this, DetailItemActivity::class.java)
         intent.putExtra("itemName", todoListModel.getString("itemName"))
+        intent.putExtra("itemId", todoListModel.id)
         startActivity(intent)
     }
 }
