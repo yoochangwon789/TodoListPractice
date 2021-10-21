@@ -9,22 +9,23 @@ import com.yoochangwonspro.todolistpractice.todomodel.TodoDetailModel
 class DetailItemActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailItemBinding
-    private lateinit var db: AppDatabase
+
+    private val db: AppDatabase by lazy {
+        Room.databaseBuilder(
+            this,
+            AppDatabase::class.java, "todoDetailRoom"
+        ).build()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = Room.databaseBuilder(
-            this,
-            AppDatabase::class.java, "todoDetailRoom"
-        ).build()
-
         val itemName = intent.getStringExtra("itemName")
         val itemId = intent.getStringExtra("itemId")
 
-        binding.detailItemTopTextView.text = itemName.orEmpty()
+        itemTopText(itemName)
 
         Thread {
             val todoDetail = db.todoDetailModelDao().getOnTodoDetail(itemId ?: "")
@@ -44,5 +45,9 @@ class DetailItemActivity : AppCompatActivity() {
                 )
             }.start()
         }
+    }
+
+    private fun itemTopText(itemName: String?) {
+        binding.detailItemTopTextView.text = itemName.orEmpty()
     }
 }
