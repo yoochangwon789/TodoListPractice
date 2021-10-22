@@ -61,4 +61,9 @@ class DetailItemActivity : AppCompatActivity() {
             Toast.makeText(this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }
