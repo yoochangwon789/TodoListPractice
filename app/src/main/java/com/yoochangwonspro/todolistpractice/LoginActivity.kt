@@ -29,6 +29,11 @@ class LoginActivity : AppCompatActivity() {
         signUpButtonAndLoginButtonIsEnabled()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
     private fun initSignUpButton() {
         binding.LoginSignUpButton.setOnClickListener {
             signUp()
