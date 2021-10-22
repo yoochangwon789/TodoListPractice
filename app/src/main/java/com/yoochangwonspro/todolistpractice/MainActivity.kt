@@ -103,6 +103,15 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("itemId", todoListModel.id)
         startActivity(intent)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+    }
+
+    companion object {
+        private const val FINISH_INTERVAL_TIME: Long = 2000
+    }
 }
 
 class MainViewModel : ViewModel() {
